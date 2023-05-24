@@ -7,12 +7,10 @@ module "vault" {
   version = "0.17.0"
 
   vpc_id = "vpc-39975044"
-  #subnet_ids = ["subnet-c4f243e5"]
 
-  instances_count = 1
-  instance_type   = "t2.medium"
+  vault_instance_type = "t2.medium"
 
-  cluster_name = "vault"
+  vault_cluster_name = "vault"
 
   tags = {
     Terraform   = "true"
