@@ -5,8 +5,8 @@ provider "aws" {
 module "vault" {
   source = "terraform-aws-modules/vault/aws"
 
-  vpc_id     = "vpc-049df61146f12"
-  subnet_ids = ["subnet-049df61146f12"]
+  vpc_id     = "vpc-39975044"
+  subnet_ids = ["subnet-c4f243e5"]
 
   instances_count = 1
   instance_type   = "t2.medium"
