@@ -11,9 +11,4 @@ module "vault" {
   vault_instance_type = "t2.medium"
 
   vault_cluster_name = "vault"
-
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
 }
