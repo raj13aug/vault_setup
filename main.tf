@@ -2,27 +2,22 @@ provider "aws" {
   region = "us-east-1"
 }
 
-data "aws_ami" "linux" {
-  owners      = ["amazon"]
+data "aws_ami" "ubuntu" {
   most_recent = true
+
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-2.0*"]
+    values = ["ubuntu-focal-20.04-amd64-server-*"]
   }
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
+
 }
 
 resource "aws_instance" "linux" {
-  ami                    = data.aws_ami.linux.image_id
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = ["sg-id1", "sg-id2", "sg-id3"]
-  subnet_id              = "subnet-id"
-  key_name               = "new-eks"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  key_name      = "new-eks"
   tags = {
-    Name = "instance_name"
+    Name = "Vault"
   }
   user_data = <<EOF
         #!/bin/bash
@@ -30,12 +25,7 @@ resource "aws_instance" "linux" {
         EOF
 }
 
-output "public_dns" {
-  value = aws_instance.linux.*.public_dns
-}
+
 output "public_ip" {
-  value = aws_instance.linux.*.public_ip
-}
-output "name" {
-  value = aws_instance.linux.*.tags.Name
+  value = aws_instance.linux.public_ip
 }
