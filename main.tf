@@ -13,22 +13,14 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "linux" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t2.micro"
   user_data              = file("vault_script.sh")
-  vpc_security_group_ids = [aws_security_group.ec2.id]  
-  key_name      = "new-eks"
+  vpc_security_group_ids = [aws_security_group.ec2.id]
+  key_name               = "new-eks"
   tags = {
     Name = "Vault"
   }
-  user_data = <<EOF
-        #!/bin/bash
-        set -e
-        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-        apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-        apt update
-        apt install vault -y
-EOF
 }
 
 
