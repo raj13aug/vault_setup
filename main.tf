@@ -2,18 +2,9 @@ provider "aws" {
   region = "us-east-1"
 }
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu-*-20.04-*"]
-  }
-
-}
 
 resource "aws_instance" "linux" {
-  ami                    = data.aws_ami.ubuntu.id
+  ami                    = "ami-053b0d53c279acc90"
   instance_type          = "t2.micro"
   user_data              = file("vault_script.sh")
   vpc_security_group_ids = [aws_security_group.ec2.id]
