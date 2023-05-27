@@ -7,10 +7,10 @@ apt install vault -y
 
 
 tee /etc/vault.d/vault.hcl <<EOF
+disable_cache = true
+disable_mlock = true
 ui = true
 
-#mlock = true
-#disable_mlock = true
 
 storage "file" {
 path = "/opt/vault/data"
@@ -20,9 +20,15 @@ path = "/opt/vault/data"
 # HTTPS listener
 listener "tcp" {
 address = "0.0.0.0:8200"
-tls_cert_file = "/opt/vault/tls/tls.crt"
-tls_key_file = "/opt/vault/tls/tls.key"
+tls_disable = 1
 }
+api_addr         = "http://0.0.0.0:8200"
+max_lease_ttl         = "10h"
+default_lease_ttl    = "10h"
+cluster_name         = "vault"
+raw_storage_endpoint     = true
+disable_sealwrap     = true
+disable_printable_check = true
 EOF
 
 systemctl start vault
