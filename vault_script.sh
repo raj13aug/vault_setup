@@ -69,4 +69,6 @@ systemctl enable nginx.service
 systemctl restart nginx.service
 systemctl restart vault
 
+export VAULT_ADDR=http://127.0.0.1:8200
 echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
+vault operator init > /opt/init.file
