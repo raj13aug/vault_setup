@@ -4,7 +4,7 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt update
 apt install vault -y
-
+apt install nginx -y
 
 tee /etc/vault.d/vault.hcl <<EOF
 disable_cache = true
@@ -39,8 +39,7 @@ systemctl enable vault
 echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
 
 
-##Install nginx
-apt-get install nginx -y
+
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo rm -rf /etc/nginx/sites-available/default
 touch /etc/nginx/sites-available/vault
