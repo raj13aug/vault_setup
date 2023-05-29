@@ -20,7 +20,7 @@ resource "aws_security_group" "ec2" {
 }
 
 
-resource "aws_security_group" "ec2" {
+resource "aws_security_group" "ec2_ssh" {
   name        = "allow_vault_ssh"
   description = "Allow vault ssh outbound traffic"
 
