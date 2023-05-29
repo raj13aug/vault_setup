@@ -31,9 +31,10 @@ disable_sealwrap     = true
 disable_printable_check = true
 EOF
 
-echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
-vault operator init > /opt/init.file
 
 systemctl start vault
 systemctl status vault
 systemctl enable vault
+
+echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
+vault operator init > /opt/init.file
