@@ -36,9 +36,6 @@ systemctl start vault
 systemctl status vault
 systemctl enable vault
 
-echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
-
-
 
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo rm -rf /etc/nginx/sites-available/default
@@ -71,3 +68,5 @@ ln -s /etc/nginx/sites-available/vault /etc/nginx/sites-enabled/vault
 systemctl enable nginx.service
 systemctl restart nginx.service
 systemctl restart vault
+
+echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
