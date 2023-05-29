@@ -14,15 +14,6 @@ resource "aws_security_group" "ec2" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Name = "allow_vault"
-  }
-}
-
-
-resource "aws_security_group" "ec2_ssh" {
-  name        = "allow_vault_ssh"
-  description = "Allow vault ssh outbound traffic"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -36,7 +27,8 @@ resource "aws_security_group" "ec2_ssh" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   tags = {
-    Name = "allow_vault_ssh"
+    Name = "allow_vault"
   }
 }
