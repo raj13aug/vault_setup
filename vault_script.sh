@@ -37,14 +37,16 @@ systemctl status vault
 systemctl enable vault
 
 echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
+
 vault operator init > /opt/init.file
 
 ##Install nginx
-sudo apt-get install nginx -y
+apt-get install nginx -y
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo rm -rf /etc/nginx/sites-available/default
-sudo touch /etc/nginx/sites-available/vault
-sudo bash -c 'sudo cat <<EOT> /etc/nginx/sites-available/vault
+touch /etc/nginx/sites-available/vault
+
+bash -c 'sudo cat <<EOT> /etc/nginx/sites-available/vault
 server{
     listen      80;
     server_name vault.robofarming.link;
@@ -65,9 +67,9 @@ server{
 }
 EOT'
 #Create symbolic link
-sudo ln -s /etc/nginx/sites-available/vault /etc/nginx/sites-enabled/vault
+ln -s /etc/nginx/sites-available/vault /etc/nginx/sites-enabled/vault
 
 #Start Artifactory 
-sudo systemctl enable nginx.service
-sudo systemctl restart nginx.service
-sudo systemctl restart artifactory.service
+systemctl enable nginx.service
+systemctl restart nginx.service
+systemctl restart vault
