@@ -38,3 +38,36 @@ systemctl enable vault
 
 echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
 vault operator init > /opt/init.file
+
+##Install nginx
+sudo apt-get install nginx -y
+sudo rm -rf /etc/nginx/sites-enabled/default
+sudo rm -rf /etc/nginx/sites-available/default
+sudo touch /etc/nginx/sites-available/vault
+sudo bash -c 'sudo cat <<EOT> /etc/nginx/sites-available/vault
+server{
+    listen      80;
+    server_name vault.robofarming.link;
+    access_log  /var/log/nginx/vault.access.log;
+    error_log   /var/log/nginx/vault.error.log;
+    proxy_buffers 16 64k;
+    proxy_buffer_size 128k;
+    location / {
+        proxy_pass  http://127.0.0.1:8200;
+        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+        proxy_redirect off;
+              
+        proxy_set_header    Host            \$host;
+        proxy_set_header    X-Real-IP       \$remote_addr;
+        proxy_set_header    X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto http;
+    }
+}
+EOT'
+#Create symbolic link
+sudo ln -s /etc/nginx/sites-available/vault /etc/nginx/sites-enabled/vault
+
+#Start Artifactory 
+sudo systemctl enable nginx.service
+sudo systemctl restart nginx.service
+sudo systemctl restart artifactory.service
