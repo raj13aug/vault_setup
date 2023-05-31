@@ -1,3 +1,5 @@
+# Allow http and ssh connection
+
 resource "aws_security_group" "ec2" {
   name        = "allow_vault"
   description = "Allow vault outbound traffic"

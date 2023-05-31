@@ -1,5 +1,8 @@
 #!/bin/bash
 set -e
+
+# Installation
+
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt update
@@ -11,13 +14,15 @@ disable_cache = true
 disable_mlock = true
 ui = true
 
+# Configuring Vault Storage
 
 storage "file" {
 path = "/opt/vault/data"
 }
 
 
-# HTTPS listener
+# Configuring HTTP Access
+
 listener "tcp" {
 address = "0.0.0.0:8200"
 tls_disable = 1
@@ -31,7 +36,7 @@ disable_sealwrap     = true
 disable_printable_check = true
 EOF
 
-
+# Enable the Vault service
 systemctl start vault
 systemctl status vault
 systemctl enable vault
@@ -40,6 +45,8 @@ systemctl enable vault
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo rm -rf /etc/nginx/sites-available/default
 touch /etc/nginx/sites-available/vault
+
+# Configuring Nginx reverse proxy
 
 bash -c 'sudo cat <<EOT> /etc/nginx/sites-available/vault
 server{
@@ -64,11 +71,14 @@ EOT'
 #Create symbolic link
 ln -s /etc/nginx/sites-available/vault /etc/nginx/sites-enabled/vault
 
-#Start Artifactory 
+# Enable the nginx service
 systemctl enable nginx.service
 systemctl restart nginx.service
 systemctl restart vault
 
+#  set the Vault address
 export VAULT_ADDR=http://127.0.0.1:8200
 echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
+
+# Initialize Vault server
 vault operator init > /opt/init.file
